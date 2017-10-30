@@ -9,9 +9,9 @@
 ## What we have learned so far:
 - What is Imbalanced Data
 - Dealing with imbalanced data
-- - Evaluation Metrics
-- - Resampling Techniques
-- - Algorithmic Techniques
+  - Evaluation Metrics
+  - Resampling Techniques
+  - Algorithmic Techniques
 - Dealing with small datasets
 - Values of K in K-Fold validation
 - Do we need hundreds of classifiers?
