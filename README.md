@@ -7,7 +7,14 @@
 * We have seen in the lectures what are the challenges needs to face in case of the data is imbalanced.
 
 ## What we have learned so far:
-
+- What is Imbalanced Data
+- Dealing with imbalanced data
+- - Evaluation Metrics
+- - Resampling Techniques
+- - Algorithmic Techniques
+- Dealing with small datasets
+- Values of K in K-Fold validation
+- Do we need hundreds of classifiers?
 
 ## What we are going to do?
 * So in this exercise You are given a data set. Use your Machine learning skills to solve it. 
