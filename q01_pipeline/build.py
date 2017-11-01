@@ -37,10 +37,11 @@ wt1, wt2 = compute_class_weight('balanced', np.unique(y_train), y=y_train)
 
 model = RandomForestClassifier(random_state=9, oob_score=True, verbose=1, n_jobs=-1,
                                class_weight={0: wt1, 1: wt2},
-                               n_estimators=1000)
+                               n_estimators=10)
 
 
-def pipeline(X_train, X_test, y_train, y_test, model, param_grid):
+def pipeline(X_train, X_test, y_train, y_test, model):
+
     grid = GridSearchCV(estimator=model, param_grid=param_grid)
     grid.fit(X_train, y_train)
     y_pred = grid.predict_proba(X_test)[:, 1]

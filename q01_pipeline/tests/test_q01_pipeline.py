@@ -1,7 +1,6 @@
 from unittest import TestCase
-from ..build import pipeline, X_train, X_test, y_train, y_test, param_grid, model
+from ..build import pipeline, X_train, X_test, y_train, y_test, model
 from inspect import getargspec
-from sklearn.ensemble import RandomForestClassifier
 import pandas as pd
 from sklearn.metrics import roc_auc_score
 import numpy
@@ -16,12 +15,12 @@ class TestPipeline(TestCase):
 
         # Input parameters tests
         args = getargspec(pipeline)
-        self.assertEqual(len(args[0]), 6, "Expected arguments %d, Given %d" % (6, len(args[0])))
+        self.assertEqual(len(args[0]), 5, "Expected arguments %d, Given %d" % (5, len(args[0])))
         self.assertEqual(args[3], None, "Expected default values do not match given default values")
 
         # Return data types
 
-        grid_model,  auc_score = pipeline(X_train, X_test, y_train, y_test, model, param_grid)
+        grid_model,  auc_score = pipeline(X_train, X_test, y_train, y_test, model)
         prediction = grid_model.predict_proba(X)[:, 1]
 
         auc_score_test = roc_auc_score(y, prediction)
