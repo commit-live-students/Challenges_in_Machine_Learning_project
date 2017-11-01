@@ -37,7 +37,7 @@ wt1, wt2 = compute_class_weight('balanced', np.unique(y_train), y=y_train)
 
 model = RandomForestClassifier(random_state=9, oob_score=True, verbose=1, n_jobs=-1,
                                class_weight={0: wt1, 1: wt2},
-                               n_estimators=10)
+                               n_estimators=1000)
 
 
 def pipeline(X_train, X_test, y_train, y_test, model):
