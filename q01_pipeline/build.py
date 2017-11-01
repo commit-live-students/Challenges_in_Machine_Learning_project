@@ -1,19 +1,21 @@
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler, LabelEncoder
-from sklearn.linear_model import LogisticRegression
-from imblearn.over_sampling import SMOTE
-from sklearn.pipeline import make_pipeline
-from sklearn.metrics import auc, roc_curve, accuracy_score
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.preprocessing import LabelEncoder
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.utils.class_weight import compute_class_weight
+from sklearn.metrics import roc_auc_score
 
-credit = pd.read_csv('data/credit_dataset_for_class.csv', index_col=0)
-y = credit[['Student']]
-X = credit.drop(['Student'], axis=1)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=9)
+bank = pd.read_csv('data/Bank_data_to_class.csv', sep=',')
+
+param_grid = dict(
+    max_leaf_nodes=[50, 40, 60, 70],
+    max_depth=[8, 10, 12, 15, 20],
+    max_features=[4, 6, 8],
+    min_samples_split=[50, 40, 30, 35]
+)
 
 
-# Write your solution here
 def number_encode_features(df):
     result = df.copy()
     encoders = {}
@@ -24,15 +26,23 @@ def number_encode_features(df):
     return result, encoders
 
 
-credit, _ = number_encode_features(credit)
-credit.head()
+bank, _ = number_encode_features(bank)
+
+y = bank['y']
+X = bank.drop(['y'], axis=1)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, random_state=9)
 
 
-def pipeline(X_train, X_test, y_train, y_test):
-    smote = SMOTE(kind="regular", random_state=9)
-    X_sm, y_sm = smote.fit_sample(X_train, y_train)
-    logit = LogisticRegression(random_state=9)
-    model = logit.fit(X_train, y_train)
-    y_pred = model.predict(X_test)
-    fpr, tpr, thresholds = roc_curve(y_test, y_pred)
-    return accuracy_score(y_test, y_pred), auc(fpr, tpr)
+wt1, wt2 = compute_class_weight('balanced', np.unique(y_train), y=y_train)
+
+model = RandomForestClassifier(random_state=9, oob_score=True, verbose=1, n_jobs=-1,
+                               class_weight={0: wt1, 1: wt2},
+                               n_estimators=1000)
+
+
+def pipeline(X_train, X_test, y_train, y_test, model, param_grid):
+    grid = GridSearchCV(estimator=model, param_grid=param_grid)
+    grid.fit(X_train, y_train)
+    y_pred = grid.predict_proba(X_test)[:, 1]
+    return grid, roc_auc_score(y_test, y_pred)
+
