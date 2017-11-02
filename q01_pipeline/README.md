@@ -6,7 +6,7 @@
 
 ## Write a function `pipeline` that:
 
-* Will take test, train and list of models to create a pipeline of functions that will execute and return a AUC score.
+* Will take test, train and model to create a function that will execute and return a AUC score and model.
 * This model will be used to validate on our dataset and your score should be equal or more than threshold score value of AUC which is 0.72.
 * Use random _state to 9.
 
@@ -26,3 +26,4 @@
 | Return | dtype | description |
 | --- | --- | --- |
 | AUC | float | AUC score of the model |
+| Model | model | Final model that is trained |
