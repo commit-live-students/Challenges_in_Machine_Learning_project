@@ -1,6 +1,6 @@
 from unittest import TestCase
 from ..build import pipeline, X_train, X_test, y_train, y_test, model
-from inspect import getargspec
+from inspect import getfullargspec
 import pandas as pd
 from sklearn.metrics import roc_auc_score
 import numpy
@@ -14,9 +14,10 @@ class TestPipeline(TestCase):
     def test_pipeline(self):
 
         # Input parameters tests
-        args = getargspec(pipeline)
-        self.assertEqual(len(args[0]), 5, "Expected arguments %d, Given %d" % (5, len(args[0])))
-        self.assertEqual(args[3], None, "Expected default values do not match given default values")
+        args = getfullargspec(pipeline).args
+        args_default = getfullargspec(pipeline).defaults
+        self.assertEqual(len(args), 5, "Expected arguments %d, Given %d" % (5, len(args)))
+        self.assertEqual(args_default, None, "Expected default values do not match given default values")
 
         # Return data types
 

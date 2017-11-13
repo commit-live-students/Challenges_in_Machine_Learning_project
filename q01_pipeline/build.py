@@ -9,5 +9,3 @@ from sklearn.metrics import roc_auc_score
 bank = pd.read_csv('data/Bank_data_to_class.csv', sep=',')
 
 # Write your solution here :
-
-
